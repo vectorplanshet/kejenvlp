@@ -23,15 +23,44 @@
 ></script>
     <style>
         /* General Map Styles */
-        #map {
-            height: 100vh;
-        }
+#map {
+  position: relative;
+  height: 100vh;
+}
+
+/* ВЕРХНЯЯ ПОЛОСА */
+#map::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background: #000;
+  z-index: 1500;
+  pointer-events: none;
+}
+
+/* НИЖНЯЯ ПОЛОСА */
+#map::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 49px;
+  background: #000;
+  z-index: 1500;
+  pointer-events: none;
+}
+
 
         html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
+
 }
 #topbar {
     position: absolute;
@@ -75,7 +104,7 @@
   width: 90%;
   transition: all 0.35s ease;
   color: #f0f0f0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   font-size: 11.2px; /* 9.3×1.2 */
 }
 
@@ -109,6 +138,14 @@ input[type="text"] {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.modal-button:hover {
+  background-color: #6088e7;
+}
+
+.modal-button:focus {
+  outline: none;
+}
+
 .modal-background {
   position: fixed;
   top: 0;
@@ -126,222 +163,178 @@ input[type="text"] {
   transform: translate(-50%, -50%) scale(1);
 }
 
-
+/* --- map filter --- */
 :root {
-    --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.5) brightness(0.7) grayscale(3);
+  --map-tiles-filter: brightness(0.6) invert(1) contrast(3)
+    hue-rotate(200deg) saturate(0.5) brightness(0.7) grayscale(3);
 }
 
 .map-tiles {
-    filter: var(--map-tiles-filter, none);
+  filter: var(--map-tiles-filter, none);
 }
 
-
-
-.modal-button:hover {
-    background-color: #6088e7;
+/* --- text styles --- */
+.shifted-info-container {
+  margin-left: 2.5px; /* 2.1×1.2 */
+}
+.shifted-info-containerr {
+  margin-right: 12px;
 }
 
-.modal-button:focus {
-    outline: none;
+.red-id,
+.blue-id {
+  color: #000000;
 }
 
-        /* Сдвигаем контейнер вправо для нужных объектов */
-        .shifted-info-container {
-            margin-left: 2.1px; /* Сдвиг на 20px вправо, можно менять значение */
-        }
-        .shifted-info-containerr {
-            margin-right: 10px;
-        }
-    
-      .red-id {
-            color: #000000;
-        }
-        .blue-id {
-            color: #000000; /* Синий цвет для текста */
-        }
-
-        /* Стили для текста в зависимости от цвета */
 .red-id .label-container,
 .red-id .r-container,
-.red-id .rls-container, 
-.red-id .icon-container {
-    color: #000000;
-}
-
+.red-id .rls-container,
+.red-id .icon-container,
 .blue-id .label-container,
 .blue-id .r-container,
 .blue-id .rls-container,
 .blue-id .icon-container {
-        color: #000000; /* Синий цвет для текста */
+  color: #000000;
 }
-      .shifted-id-x-101 {
-    margin-left: 32px; /* 20 * 1.6 */
+
+.shifted-id-x-101 {
+  margin-left: 38.4px; /* 32×1.2 */
 }
 .shifted-id {
-    margin-left: 24px; /* 15 * 1.6 */
+  margin-left: 28.8px; /* 24×1.2 */
 }
 .shifted-id-grumble,
 .shifted-id-kinzhal {
-    margin-left: 40px; /* 25 * 1.6 */
+  margin-left: 48px; /* 40×1.2 */
 }
 
+/* --- info container --- */
 .info-container {
-    line-height: 14px; /* 9 * 1.6 */
+  line-height: 10.8px; /* 9×1.2 */
+  display: inline-block;
+  position: relative;
 }
+
+
 .iconname {
-    line-height: 8px; /* 5 * 1.6 */
+  line-height: 9.6px; /* 8×1.2 */
 }
 .info-container1 {
-    line-height: 11px; /* 7 * 1.6 */
+  line-height: 13.2px; /* 11×1.2 */
 }
+
 .info-container {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px; /* 1.7 × 1.2 */
-
-    padding: 4.8px 39.6px 4.8px 39.6px; /* 4×1.2, 33×1.2 */
-    min-width: 74.4px;            /* 62×1.2 */
-    height: 10.8px;               /* 9×1.2 */
-    line-height: 0.8;
-
-    border-style: solid;
-    border-width: 1px;            /* 0.8×1.2 */
-    border-top-color: rgba(0,0,0,0.95);
-    border-left-color: rgba(0,0,0,0.95);
-    border-right-color: rgba(0,0,0,0.95);
-    border-bottom-color: rgba(0,0,0,0.95);
-    box-sizing: border-box;
-
-    contain: layout paint;
-    will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px; /* 1.7×1.2 */
 }
 
-.info-container.expanded {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center;
-    justify-content: center;
-    gap: 1px;          /* 0.8×1.2 */
-    padding: 3px 4.8px;  /* 2.5×1.2, 4×1.2 */
-    height: auto !important;
-    min-width: auto;
-    line-height: 1;
-}
-
-/* ——— Текстовые контейнеры ——— */
+/* --- text containers --- */
 .label-container,
 .r-container,
 .rls1-container,
 .rls-container,
 .label1-container,
 .r1-container {
-    font-size: 10.3px;          /* 8.6×1.2 */
-    font-weight: 400;
-    font-family: 'Roboto', sans-serif;
-    -webkit-text-stroke-color: black;
+  font-size: 10px; /* 8.6×1.2 */
+  font-weight: 600;
+  font-family: "Roboto", sans-serif;
+  -webkit-text-stroke-color: black;
 }
 
 .rls1-container,
 .rls-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* ---------- DELETE BUTTON ---------- */
+/* Delete Button */
 #deleteButton {
-    width: 29.5px;           /* 24.6 × 1.2 */
-    height: 25.6px;          /* 21.3 × 1.2 */
-    border-radius: 1.6px;    /* 1.3 × 1.2 */
-    background-color: rgb(101, 101, 101);
+    width: 29.5px;          /* 24.6 × 1.2 */
+    height: 25.6px;         /* 21.3 × 1.2 */
+    border-radius: 1.6px;   /* 1.3 × 1.2 */
+    background-color: rgb(223, 223, 223);
     color: rgb(130, 130, 130);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    font-size: 12.8px;       /* 10.7 × 1.2 */
-    box-shadow: 0 0.8px 3.2px rgba(0,0,0,0.3);  /* 0.67×1.2, 2.67×1.2 */
+    font-size: 11.2px;      /* 9.31 × 1.2 */
     border: none;
     cursor: pointer;
 }
 
+/* Smooth Transition for Modals */  
+.modal.show {
+    display: block;
+    animation: fadeIn 0.36s ease-out; /* немного дольше для плавности */
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-        /* Smooth Transition for Modals */  
-        .modal.show {
-            display: block;
-            animation: fadeIn 0.3s ease-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+/* Иконки */
 .icon-container {
     display: flex;
     align-items: center;
-    gap: 12px;            /* 10 × 1.2 */
-    font-size: 8.4px;     /* 7 × 1.2 */
+    gap: 15px;              /* 20 × 1.2 */
+    font-size: 8.4px;       /* 7 × 1.2 */
     position: absolute;
     white-space: nowrap;
 }
-
 .icon-container .icon {
-    width: 28.8px;        /* 24 × 1.2 */
-    height: 28.8px;       /* 24 × 1.2 */
+    width: 28.8px;          /* 24 × 1.2 */
+    height: 28.8px;         /* 24 × 1.2 */
     object-fit: cover;
     display: block;
 }
-
 .icon-container1 {
     display: flex;
     align-items: center;
-    gap: 7.8px;           /* 6.5 × 1.2 */
-    font-size: 8.4px;     /* 7 × 1.2 */
+    gap: 7.8px;             /* 6.5 × 1.2 */
+    font-size: 8.4px;       /* 7 × 1.2 */
     position: absolute;
-    white-space: nowrap;  /* Убираем перенос текста */
+    white-space: nowrap;
 }
-
 .icon-container1 .icon {
-    width: 24px;   /* 34 / 2 */
-    height: 24px;  /* 34 / 2 */
+    width: 28.8px;
+    height: 28.8px;
     object-fit: cover;
     display: block;
 }
 
-
-    /* Modal Input Background for Target Coordinates */
+/* Modal Input Background for Target Coordinates */
 #targetModal {
-    padding: 13.3px;           /* 10px * 1.333 */
-    border-radius: 6.7px;      /* 5px * 1.333 */
+    padding: 16px;          /* 13.3 × 1.2 */
+    border-radius: 8px;     /* 6.7 × 1.2 */
 }
 
+/* Alert Menu */
 #alert-container {
     position: absolute;
-    top: 13.3px;               /* 10px * 1.333 */
-    left: 13.3px;              /* 10px * 1.333 */
+    top: 16px;              /* 13.3 × 1.2 */
+    left: 16px;
     z-index: 1000;
 }
 
 #alert-menu {
     background: #d2d2d2;
-    padding: 13.3px;           /* 10px * 1.333 */
-    display: none; /* Изначально скрыто */
+    padding: 16px;
+    display: none;
     border: none;
-    width: 166.7px;            /* 125px * 1.333 */
-    height: 735.3px;           /* 551.5px * 1.333 */
+    width: 200px;           /* 166.7 × 1.2 */
+    height: 882px;          /* 735.3 × 1.2 */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #000000;
-    font-size: 9.3px;          /* 7px * 1.333 */
+    font-size: 11.2px;      /* 9.3 × 1.2 */
     transition: all 0.3s ease;
     position: absolute;
 }
-
 #alert-menu:hover {
-    box-shadow: 0px 9.6px 32px rgba(0, 0, 0, 0.2); /* 7.998×1.2, 26.66×1.2 */
+    box-shadow: 0px 9.6px 32px rgba(0, 0, 0, 0.2);
 }
 
 .leaflet-control-attribution {
@@ -349,28 +342,28 @@ input[type="text"] {
 }
 
 #alert-menu h3 {
-    margin: 0 0 8px;              /* 6.7×1.2 */
+    margin: 0 0 8px;        /* 6.7 × 1.2 */
     text-align: center;
-    font-size: 12.8px;            /* 10.7×1.2 */
+    font-size: 12.8px;      /* 10.7 × 1.2 */
     color: #c4c4c4;
 }
 
 #alert-menu div {
-    margin-bottom: 4px;           /* 3.3×1.2 */
+    margin-bottom: 4px;     /* 3.3 × 1.2 */
 }
 
 #alert-menu input[type=checkbox] {
-    margin-right: 4px;            /* 3.3×1.2 */
+    margin-right: 4px;
 }
 
 button#alert-button {
-    width: 27.3px;                /* 22.7×1.2 */
-    height: 27.3px;               /* 22.7×1.2 */
+    width: 27.2px;           /* 22.7 × 1.2 */
+    height: 27.2px;
     border-radius: 50%;
     background-color: #50785D;
     color: rgb(0, 0, 0);
     font-weight: bold;
-    font-size: 9.6px;             /* 8×1.2 */
+    font-size: 9.6px;        /* 8 × 1.2 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -379,48 +372,46 @@ button#alert-button {
     cursor: pointer;
 }
 
-/* ---------- Overlay ---------- */
+/* Overlay */
 .overlay {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2000;
+    z-index: 9999;
     width: 100%;
     height: 100%;
     background: url('kod.png') center/cover no-repeat;
     pointer-events: none;
+    z-index: 2000;
     opacity: 0.25;
     transition: filter 0.3s ease;
 }
 
-/* ---------- Popup Customization ---------- */
+/* Leaflet Popups */
 .leaflet-popup-content {
     background-color: #f0f0f0;
     color: #333;
-    padding: 16px;                /* 13.3×1.2 */
-    border-radius: 16px;          /* 13.3×1.2 */
+    padding: 16px;
+    border-radius: 16px;
     font-family: 'Arial', sans-serif;
-    font-size: 22.4px;            /* 18.7×1.2 */
+    font-size: 22.4px;       /* 18.7 × 1.2 */
 }
-
 .leaflet-popup-tip {
     background-color: #f0f0f0;
 }
-
 .leaflet-popup-content h3 {
     margin-top: 0;
-    font-size: 25.6px;            /* 21.3×1.2 */
+    font-size: 25.6px;       /* 21.3 × 1.2 */
     color: #555;
 }
-
 .leaflet-control.ruler {
     position: absolute;
-    right: 16px;                  /* 13.3×1.2 */
+    right: 16px;             /* 13.3 × 1.2 */
     left: auto;
     top: auto;
 }
 
-/* ---------- Global Reset ---------- */
+/* Общие */
 * {
     margin: 0;
     padding: 0;
@@ -432,7 +423,7 @@ body {
     background: #f0f0f0;
 }
 
-/* ---------- Password Container ---------- */
+/* Password Container */
 #passwordContainer {
     position: fixed;
     top: 0;
@@ -449,39 +440,33 @@ body {
     z-index: 1010;
 }
 
-
 #passwordContainer img {
-    width: 200px;             /* 166.7 × 1.2 */
+    width: 200px;           /* 166.7 × 1.2 */
     height: auto;
 }
 
 #loginInput, #passwordInput {
-    padding: 16px 12px;       /* 13.3×1.2, 10×1.2 */
-    font-size: 11.2px;        /* 9.3×1.2 */
-    width: 320px;             /* 266.7×1.2 */
-    height: 24px;             /* 20×1.2 */
+    padding: 16px 12px;
+    font-size: 11.2px;
+    width: 320px;
+    height: 24px;
     border: none;
-    border-radius: 3.2px;     /* 2.7×1.2 */
+    border-radius: 3.2px;
     background-color: #3d4558;
     color: #fff;
     text-align: left;
-    background-position: 12px center; /* 10×1.2 */
+    background-position: 12px center;
     background-repeat: no-repeat;
-    background-size: 20px;           /* 16.7×1.2 */
+    background-size: 20px;
 }
-
 #loginInput::placeholder,
 #passwordInput::placeholder {
     color: #b0b3b8;
 }
 
-.leaflet-popup-content-wrapper {
-    zoom: 0.6; /* 0.5 × 1.2 */
-}
-
 #submitButton {
-    padding: 9.6px 32px;      /* 8×1.2, 26.7×1.2 */
-    font-size: 11.2px;        /* 9.3×1.2 */
+    padding: 9.6px 32px;
+    font-size: 11.2px;
     background-color: #4674dc;
     color: white;
     border: none;
@@ -489,39 +474,39 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     border-radius: 0;
 }
-
 #submitButton:hover {
     background-color: #5c90de;
 }
-
 #submitButton:active {
     background-color: #0033cc;
     transform: scale(0.98);
 }
 
-/* ---------- Menu ---------- */
+/* Menu Icon & Controls */
 #menu-icon {
     position: absolute;
-    top: 13.6px;              /* 11.3×1.2 */
-    left: 16px;               /* 13.3×1.2 */
-    width: 136px;             /* 113.3×1.2 */
-    height: 20px;             /* 16.7×1.2 */
+    top: 13.6px;  /* 11.3 × 1.2 */
+    left: 16px;   /* 13.3 × 1.2 */
+    width: 136px; /* 113 × 1.2 */
+    height: 20px; /* 16.6 × 1.2 */
 }
 
 .inputWrapper {
     display: flex;
     flex-direction: column;
-    gap: 8px;                 /* 6.7×1.2 */
-    margin-bottom: 163.6px;   /* 136.3×1.2 */
+    gap: 8px;
+    margin-bottom: 164px; /* 136 × 1.2 */
 }
 
 .custom-menu {
     position: absolute;
-    bottom: 25.6px;           /* 21.3×1.2 */
-    right: 16px;              /* 13.3×1.2 */
+    bottom: 26px;
+    right: 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;                /* 13.3×1.2 */
+    gap: 16px;
+        bottom: calc(var(--safe-bottom) + 26px);
+
     z-index: 1000;
 }
 
@@ -529,30 +514,14 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 4.8px;               /* 4×1.2 */
+    gap: 4.8px;  /* 4 × 1.2 */
     justify-content: flex-start;
 }
 
-.custom-button {
-    width: 30.4px;            /* 25.3×1.2 */
-    height: 24px;             /* 20×1.2 */
-    background-color: rgb(101, 101, 101);
-    border-radius: 2.4px;     /* 2×1.2 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: default;
-}
-
-.custom-button img {
-    width: 20px;              /* 16.7×1.2 */
-    height: 20px;             /* 16.7×1.2 */
-}
-
 #left-arrow-button {
-    width: 30.4px;            /* 25.3×1.2 */
-    height: 24px;             /* 20×1.2 */
-    background-color: rgb(101, 101, 101);
+    width: 30px;
+    height: 24px;
+    background-color: rgb(223, 223, 223);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -560,48 +529,69 @@ body {
     border: none;
     cursor: pointer;
 }
-
 #left-arrow-button img {
-    width: 17.6px;            /* 14.7×1.2 */
-    height: 17.6px;           /* 14.7×1.2 */
+    width: 17.5px;
+    height: 17.5px;
 }
 
-/* ---------- Warning Message ---------- */
+.custom-button {
+    width: 30px;
+    height: 24px;
+    background-color: rgb(223, 223, 223);
+    border-radius: 3.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+.custom-button img {
+    width: 20px;
+    height: 20px;
+}
+.custom-button.green {
+    background-color: rgb(223, 223, 223);
+}
+:root {
+  --safe-top: 25px;
+  --safe-bottom: 50px;
+}
+
 #warning-message {
     position: fixed;
-    top: 0;
+    top: calc(var(--safe-top) + 0px);
     width: 100%;
-    height: 20px;             /* 16.7×1.2 */
+    height: 20px;
     background-color: rgba(0, 0, 0, 0.8);
     color: rgb(255, 0, 68);
     text-align: center;
-    padding: 4px;             /* 3.3×1.2 */
-    font-size: 11.2px;        /* 9.3×1.2 */
+    padding: 4px;
+    font-size: 11.2px;
     z-index: 9999;
 }
 
-/* ---------- Version Text ---------- */
 .menu-text {
     position: fixed;
-    right: 16px;              /* 13.3×1.2 */
-    bottom: 6.4px;            /* 5.3×1.2 */
-    font-size: 12.8px;        /* 10.7×1.2 */
+    right: 16px;
+    bottom: calc(var(--safe-bottom) + 6.4px);
+    font-size: 12.8px;
     color: rgba(0, 0, 0, 0.3);
     line-height: 1;
     text-align: right;
     margin-bottom: 0;
-    padding-top: 4.8px;       /* 4×1.2 */
+    padding-top: 4.8px;
 }
 
-/* ---------- Dynamic Zoom ---------- */
+
+/* Блок динамического зума */
 .dynamic-zoom {
     position: absolute;
-    bottom: 24px;             /* 20×1.2 */
+    bottom: 24px;             /* 20 × 1.2 */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
+        bottom: calc(var(--safe-bottom) + 24px);
     flex-direction: row;
-    gap: 12px;                /* 10×1.2 */
+    gap: 12px;                /* 10 × 1.2 */
     opacity: 0;
     transition: opacity 0.3s;
     pointer-events: none;
@@ -614,23 +604,34 @@ body {
 }
 
 .dynamic-zoom button {
-    width: 36px;              /* 30×1.2 */
-    height: 36px;             /* 30×1.2 */
+    width: 36px;              /* 30 × 1.2 */
+    height: 36px;
     background: white;
     border: none;
     cursor: pointer;
-    font-size: 42px;          /* 20×1.2 */
+    font-size: 42px;          /* 35 × 1.2 */
     padding: 0;
     margin: 0;
-    line-height: 36px;        /* 30×1.2 */
+    line-height: 36px;
     text-align: center;
     border-radius: 0;
     box-shadow: none;
+
     color: black;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Красная линия */
+.line {
+    position: absolute;
+    width: 33px;              /* 27.5 × 1.2 */
+    height: 0.6px;            /* 0.5 × 1.2 */
+    background-color: #dd0347;
+    top: 47%;
+    left: 9.6px;              /* 8 × 1.2 */
+    transform: rotate(-180deg);
+}
 
     </style>
 </head>
@@ -647,54 +648,60 @@ body {
     <div id="leaflet-control-layers"></div>
     </div>
     <div class="overlay"></div>
+    <body>
+  
+
     <div id="map"></div>
-  <!-- Меню в правом нижнем углу -->
- <div class="custom-menu">
-   <div class="menu-row">
-  <div style="width: 94px;"></div> <!-- 59 * 1.6 -->
-  <div class="custom-button">
-    <img src="reload.png" alt="Reload" />
+<div class="custom-menu">
+  <div class="menu-row">
+    <div style="width: 130px;"></div> <!-- 108 × 1.2 -->
+    <div class="custom-button">
+      <img src="search.png" alt="Search" />
+    </div>
   </div>
-  <div class="custom-button">
-    <img src="search.png" alt="Search" />
+
+  <div class="menu-row">
+    <div style="width: 130px;"></div>
+    <div class="custom-button">
+      <img src="signal.png" alt="Signal" />
+    </div>
   </div>
-</div>
-<div class="menu-row">
-  <div style="width: 130px;"></div> <!-- 81 * 1.6 -->
-  <div class="custom-button">
-    <img src="signal.png" alt="Signal" />
+
+  <div class="menu-row">
+    <div style="width: 130px;"></div>
+    <div class="custom-button">
+      <img src="ugol.png" alt="Arrow" />
+    </div>
   </div>
-</div>
-<div class="menu-row">
-  <div style="width: 130px;"></div>
-  <div class="custom-button">
-    <img src="ugol.png" alt="Arrow" />
+
+  <div class="menu-row">
+    <div style="width: 130px;"></div>
+    <div class="custom-button">
+      <img src="pryamougol.png" alt="Layer" />
+    </div>
   </div>
-</div>
-<div class="menu-row">
-  <div style="width: 130px;"></div>
-  <div class="custom-button">
-    <img src="pryamougol.png" alt="Layer" />
+
+  <div class="menu-row">
+    <div style="width: 130px;"></div>
+    <div class="custom-button green">
+      <img src="plus.png" alt="Plus" />
+    </div>
   </div>
-</div>
-<div class="menu-row">
-  <div style="width: 130px;"></div>
-  <div class="custom-button green">
-    <img src="plus.png" alt="Plus" />
+
+  <div class="menu-row">
+    <div style="width: 63px;"></div> <!-- 52 × 1.2 -->
+    <button id="left-arrow-button">
+      <img src="strelka.png" alt="Arrow" />
+    </button>
+    <button id="alert-button">0</button>
+    <button id="deleteButton">
+      <i class="fas fa-trash-alt"></i>
+    </button>
   </div>
-</div>
-<div class="menu-row">
-  <div style="width: 64px;"></div> <!-- 40 * 1.6 -->
-  <button id="left-arrow-button">
-    <img src="strelka.png" alt="Arrow" />
-  </button>
-  <button id="alert-button">0</button>
-  <button id="deleteButton"><i class="fas fa-trash-alt"></i></button>
+
+  <span class="menu-text">ver 1300 (1.3.0)</span>
 </div>
 
-      <!-- Полупрозрачный текст внутри меню -->
-  <span class="menu-text">ver 1600 (1.6.0)</span>
-</div>
 
   </div>
 
@@ -777,7 +784,7 @@ body {
             zoomControl: false,
             zoomSnap: 0.01,
     zoomDelta: 0.01,
-      wheelPxPerZoomLevel: 80
+      wheelPxPerZoomLevel: 80,
         }).setView([48.3794, 31.1656], 6);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -861,7 +868,7 @@ var Stadia_OSMBright = L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_brigh
 });
 
 // Добавляем стандартную карту по умолчанию
-googleTerrain.addTo(map);
+osmLayer.addTo(map);
 
 // Настройка слоев для переключения
 const baseLayers = {
@@ -1251,16 +1258,15 @@ if (speed >= 120 && speed <= 121) {
     } else if (iconClass === 'kr') {
         iconUrl = 'kalibr.png';
         iconClass = 'red-id';
-        iconHtml = `
+  iconHtml = `
     <div class="icon-container ${iconClass}">
-            <div class="icon-wrap">
-        <img src="${iconUrl}" class="icon" />
-          <div class="info-container ${shiftedClass} ${shiftedClasss}" style="opacity:0;">
-                    <span class="label-container ${iconClass}">${objectId}р</span>
-                    <span class="r-container ${iconClass}">ПП·</span>
-                </div>
-            </div>
-        `;
+      <img src="${iconUrl}" class="icon" />
+      <div class="info-container ${shiftedClass} ${shiftedClasss}">
+        <span class="label-container ${iconClass}">${objectId}р</span>
+        <span class="r-container ${iconClass}">ПП·</span>
+      </div>
+    </div>
+  `;
         icon = L.divIcon({
             className: 'icon',
             html: iconHtml,
@@ -1271,12 +1277,11 @@ if (speed >= 120 && speed <= 121) {
         const objectId2 = getNextObjectIdBlue();
         iconUrl = 'zl.png';
         iconHtml = `
-    <div class="icon-container ${iconClass}">
-            <div class="icon-wrap">
-        <img src="${iconUrl}" class="icon" />
-        <div class="info-container ${shiftedClass} ${shiftedClasss}" style="opacity:0;">
-                    <span class="label-container ${iconClass}">0${objectId2}р</span>
-                    <span class="r-container ${iconClass}">ЗЛ·</span>
+        <div class="icon-container ${iconClass}">
+            <img src="${iconUrl}" class="icon" />
+            <div class="info-container ${shiftedClass} ${shiftedClasss}">
+                <span class="label-container ${iconClass}">0${objectId2}р</span>
+                <span class="r-container ${iconClass}">ЗЛ·</span>
                 </div>
             </div>
         `;
@@ -1290,9 +1295,8 @@ if (speed >= 120 && speed <= 121) {
         iconUrl = 'blue.png';
         iconHtml = `
     <div class="icon-container ${iconClass}">
-            <div class="icon-wrap">
         <img src="${iconUrl}" class="icon" />
-        <div class="info-container ${shiftedClass} ${shiftedClasss}" style="opacity:0;">
+        <div class="info-container ${shiftedClass} ${shiftedClasss}">
                     <span class="label-container ${iconClass}">0${objectId2}р</span>
                     <span class="r-container ${iconClass}">СВ·</span>
                 </div>
@@ -1308,9 +1312,8 @@ if (speed >= 120 && speed <= 121) {
         iconClass = 'blue-id';
         iconHtml = `
     <div class="icon-container ${iconClass}">
-            <div class="icon-wrap">
         <img src="${iconUrl}" class="icon" />
-        <div class="info-container ${shiftedClass} ${shiftedClasss}" style="opacity:0;">
+        <div class="info-container ${shiftedClass} ${shiftedClasss}"">
                     <span class="label-container ${iconClass}">0${objectId2}р</span>
                     <span class="r-container ${iconClass}">СВ·</span>
                 </div>
@@ -1323,16 +1326,15 @@ if (speed >= 120 && speed <= 121) {
             iconAnchor: [14.4, 14.4],
         });
     } else if (iconClass === 'perexop') {
-        iconHtml = `
-    <div class="icon-container ${iconClass}">
-            <div class="icon-wrap">
-        <img src="${iconUrl}" class="icon" />
-        <div class="info-container ${shiftedClass} ${shiftedClasss}" style="opacity:0;">
-                    <span class="label-container ${iconClass}">0${objectId2}р</span>
-                    <span class="r-container ${iconClass}">ЗЛ·</span>
-                </div>
+    iconHtml = `
+        <div class="icon-container ${iconClass}">
+            <img src="${iconUrl}" class="icon" />
+            <div class="info-container ${shiftedClass} ${shiftedClasss}">
+                <span class="label-container ${iconClass}">0${objectId2}р</span>
+                <span class="r-container ${iconClass}">ЗЛ·</span>
             </div>
-        `;
+        </div>
+    `;
         icon = L.divIcon({
             className: 'icon',
             html: iconHtml,
@@ -1349,14 +1351,13 @@ if (speed >= 120 && speed <= 121) {
         const iconName = iconTypes[iconUrl] || "Невідомий об'єкт";
         const randomNumber = Math.floor(Math.random() * 200) + 1;
 iconHtml = `
-    <div class="icon-container ${iconClass}">
-            <div class="icon-wrap">
-        <img src="${iconUrl}" class="icon" />
-        <div class="info-container ${shiftedClass} ${shiftedClasss}" style="opacity:0;">
-            <span class="label-container ${iconClass}">${objectId}р</span>
-            <span class="r-container ${iconClass}">ПП·</span>
-        </div>
+  <div class="icon-container ${iconClass}">
+    <img src="${iconUrl}" class="icon" />
+    <div class="info-container">
+      <span class="label-container ${iconClass}">${objectId}р</span>
+      <span class="r-container ${iconClass}">ПП·</span>
     </div>
+  </div>
 `;
 
         icon = L.divIcon({
@@ -1539,114 +1540,99 @@ function createTopMenu(marker) {
     if (typeof deleteMode !== 'undefined' && deleteMode) return;
     if (document.getElementById('top-menu-' + objectId)) return;
 
+    // ✅ берём safe-top ИЗ CSS
+    const SAFE_TOP = parseInt(
+        getComputedStyle(document.documentElement)
+            .getPropertyValue('--safe-top')
+    ) || 0;
+
     const menu = document.createElement('div');
     menu.id = 'top-menu-' + objectId;
 
-  const existingMenus = document.querySelectorAll('[id^="top-menu-"]').length;
-// отступ для новой панели (уменьшил зазор)
-const offset = 15 + existingMenus * 30;
+    // считаем, сколько уже есть панелей
+    const existingMenus =
+        document.querySelectorAll('[id^="top-menu-"]').length;
 
-Object.assign(menu.style, {
-    position: 'fixed',
-    top: offset + 'px',
-    left: '0',
-    width: '100%',
-    height: '30px',
-    background: 'rgba(0, 0, 0, 0.4)',
-    color: '#fff',
-    fontFamily: 'Consolas, monospace',
-    fontSize: '13px',
-    zIndex: '9999',
-    borderBottom: '1px solid rgba(255,255,255,0.15)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 8px',
-    boxShadow: 'none',
-    transition: 'none'
-});
+    // ✅ корректный offset с учётом чёрной полосы
+    const offset = SAFE_TOP + 18 + existingMenus * 36;
 
-// === Текст ===
-const row = document.createElement('div');
-Object.assign(row.style, {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(6, 1fr)',
-    alignItems: 'center',
-    width: 'calc(100% - 120px)',
-    textAlign: 'center',
-    letterSpacing: '0.3px',
-    columnGap: '12px',
-    paddingRight: '120px'
-});
+    Object.assign(menu.style, {
+        position: 'fixed',
+        top: offset + 'px',
+        left: '0',
+        width: '100%',
+        height: '36px',
+        background: 'rgba(0, 0, 0, 0.4)',
+        color: '#fff',
+        fontFamily: 'Consolas, monospace',
+        fontSize: '15.6px',
+        zIndex: '9999',
+        borderBottom: '1px solid rgba(255,255,255,0.15)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 9.6px',
+        boxShadow: 'none',
+        transition: 'none'
+    });
 
-row.innerHTML = `
-    <div>${objectId}р</div>
-    <div>A0</div>
-    <div>D0</div>
-    <div>H0.0</div>
-    <div>V${speed}</div>
-    <div>1</div>
-`;
+    /* === ТЕКСТ === */
+    const row = document.createElement('div');
+    Object.assign(row.style, {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(6, 1fr)',
+        alignItems: 'center',
+        width: 'calc(100% - 144px)',
+        textAlign: 'center',
+        letterSpacing: '0.36px',
+        columnGap: '14.4px',
+        paddingRight: '144px'
+    });
 
-// === Кнопки ===
-const icons = document.createElement('div');
-Object.assign(icons.style, {
-    position: 'absolute',
-    right: '8px',
-    display: 'flex',
-    gap: '12px'
-});
+    row.innerHTML = `
+        <div>${objectId}р</div>
+        <div>A0</div>
+        <div>D0</div>
+        <div>H0.0</div>
+        <div>V${speed}</div>
+        <div>1</div>
+    `;
 
-icons.innerHTML = `
-    <button id="changeCoordsBtn-${objectId}" title="Изменить маршрут" style="
-        width:26.4px;height:26.4px; /* 22 * 1.2 */
-        border:1px solid rgba(255,255,255,0.25);
-        background: rgb(101, 101, 101);
-        border-radius:2.4px; /* 2 * 1.2 */
-        cursor:pointer;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:0;
-    ">
-        <img src="reload.png" alt="reload" style="width:16.8px;height:16.8px;"> <!-- 14 * 1.2 -->
-    </button>
+    /* === КНОПКИ === */
+    const icons = document.createElement('div');
+    Object.assign(icons.style, {
+        position: 'absolute',
+        right: '9.6px',
+        display: 'flex',
+        gap: '14.4px'
+    });
 
-    <button id="zelenySamBtn-${objectId}" title="Самолёт" style="
-        width:26.4px;height:26.4px;
-        border:1px solid rgba(255,255,255,0.25);
-        background: rgb(101, 101, 101);
-        border-radius:2.4px;
-        cursor:default;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:0;
-    ">
-        <img src="zelenysam.png" alt="plane" style="width:18px;height:18px;"> <!-- 15 * 1.2 -->
-    </button>
+    icons.innerHTML = `
+        <button id="changeCoordsBtn-${objectId}" title="Изменить маршрут"
+            style="width:26.4px;height:26.4px;border:1px solid rgba(255,255,255,0.25);
+                   background:rgb(223,223,223);border-radius:2.4px;
+                   display:flex;align-items:center;justify-content:center;padding:0;">
+            <img src="reload.png" style="width:16.8px;height:16.8px;">
+        </button>
 
-    <button id="closeTopMenu-${objectId}" title="Закрыть" style="
-        width:26.4px;height:26.4px;
-        border:1px solid rgba(255,255,255,0.25);
-        background: rgb(101, 101, 101);
-        border-radius:2.4px;
-        cursor:pointer;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:0;
-        font-size:14.4px; /* 12 * 1.2 */
-        color:#222;
-    ">
-        <i class="fas fa-trash-alt"></i>
-    </button>
-`;
+        <button id="zelenySamBtn-${objectId}" title="Самолёт"
+            style="width:26.4px;height:26.4px;border:1px solid rgba(255,255,255,0.25);
+                   background:rgb(223,223,223);border-radius:2.4px;
+                   display:flex;align-items:center;justify-content:center;padding:0;">
+            <img src="zelenysam.png" style="width:18px;height:18px;">
+        </button>
+
+        <button id="closeTopMenu-${objectId}" title="Закрыть"
+            style="width:26.4px;height:26.4px;border:1px solid rgba(255,255,255,0.25);
+                   background:rgb(223,223,223);border-radius:2.4px;
+                   display:flex;align-items:center;justify-content:center;padding:0;">
+                           <i class="fas fa-trash-alt"></i>
+        </button>
+    `;
 
     menu.appendChild(row);
     menu.appendChild(icons);
     document.body.appendChild(menu);
-
     // обновлено — линия теперь исчезает при закрытии меню
     document.getElementById(`closeTopMenu-${objectId}`).onclick = () => {
         // вернуть иконку в обычный вид, если была раскрыта
@@ -1678,14 +1664,12 @@ if (marker._expanded) {
         marker.isExpanded = false;
     }
 
-    // обновить позиции остальных меню
-    const allMenus = document.querySelectorAll('[id^="top-menu-"]');
-    allMenus.forEach((m, i) => {
-        m.style.top = 15 + i * 30 + 'px';
-    });
-};
-
-
+        // ✅ перерасчёт всех меню С УЧЁТОМ SAFE-TOP
+        const allMenus = document.querySelectorAll('[id^="top-menu-"]');
+        allMenus.forEach((m, i) => {
+            m.style.top = (SAFE_TOP + 18 + i * 36) + 'px';
+        });
+    };
     document.getElementById(`changeCoordsBtn-${objectId}`).onclick = () => {
         openCoordsModal((coordsText) => {
             if (!coordsText) return;
@@ -1767,7 +1751,7 @@ const objectType = ICON_TYPES[iconUrl] || "";
 
        const expandedHtml = `
 <div class="icon-container ${iconClass} ${marker._expanded ? "expanded" : ""} ${objectType ? "with-type" : ""}">
-
+    <div class="line"></div>
     <!-- БЛОК ИКОНКИ — ТОЛЬКО КАРТИНКА -->
     <div class="icon-wrap">
         <img src="${iconUrl}" class="icon" />
@@ -1781,11 +1765,11 @@ const objectType = ICON_TYPES[iconUrl] || "";
             align-items: flex-start !important;
             justify-content: flex-start !important;
 
-            padding: 0.8px 4px 0.8px 8px !important;
+            padding: 0.8px 2px 0.8px 4px !important;
             min-width: auto !important;
     height: auto !important;
     gap: 0.8px !important;                    /* 1 * 0.83 */
-    line-height: 1.2 !important;
+    line-height: 1 !important;
     contain: none !important;
              ">
 <span class="r-container ${iconClass}">${objectType}</span>
@@ -1806,7 +1790,7 @@ const objectType = ICON_TYPES[iconUrl] || "";
 
 const expandedAnchor = [
     marker._originalAnchor[0],
-    marker._originalAnchor[1] + (objectType ? 11 : 6)
+    marker._originalAnchor[1] + (objectType ? 7.5 : 3)
 ];
 
 
@@ -2338,22 +2322,22 @@ function getNextLitakId() {
     // Проверяем каждые 500 мс
     setInterval(updateAlertCount, 500);
     updateAlertCount();
-        const zoomButtons = document.getElementById('zoom-buttons');
-        let hideTimeout;
+    const zoomButtons = document.getElementById('zoom-buttons');
+    let hideTimeout;
 
-        function showZoomButtons() {
-        zoomButtons.classList.add('show');
-        if (hideTimeout) clearTimeout(hideTimeout);
-        hideTimeout = setTimeout(() => {
-            zoomButtons.classList.remove('show');
-        }, 3000);
-        }
+    function showZoomButtons() {
+      zoomButtons.classList.add('show');
+      if (hideTimeout) clearTimeout(hideTimeout);
+      hideTimeout = setTimeout(() => {
+        zoomButtons.classList.remove('show');
+      }, 3000);
+    }
 
-        map.on('movestart', showZoomButtons);
-        map.on('move', showZoomButtons);
+    map.on('movestart', showZoomButtons);
+    map.on('move', showZoomButtons);
 
-        document.getElementById('zoom-in').onclick = () => map.zoomIn();
-        document.getElementById('zoom-out').onclick = () => map.zoomOut();
+    document.getElementById('zoom-in').onclick = () => map.zoomIn();
+    document.getElementById('zoom-out').onclick = () => map.zoomOut();
 
     </script>
 </body>
