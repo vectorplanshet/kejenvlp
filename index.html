@@ -1095,8 +1095,11 @@ map.on('click', (e) => {
     // Условия для выбора иконки в зависимости от скорости
     if (speed >= 120 && speed <= 121) {
         iconUrl = 'supercam.png';
-    } else if (speed > 120 && speed <= 200) {
-        iconUrl = 'shahed.png';
+} else if (speed > 120 && speed <= 200) {
+
+    // случай иконки — создаём случай 1 раз
+    const random = Math.random();
+    iconUrl = random < 0.3 ? 'neyst tip.png' : 'shahed.png';
     } else if (speed >= 7559 && speed < 7560) {
         iconUrl = 'iskander.png';
     } else if (speed >= 950 && speed <= 951) {
