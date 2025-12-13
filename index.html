@@ -660,6 +660,21 @@ body {
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
 }
+.leaflet-watermark {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+
+  opacity: 0.3;
+  background-repeat: repeat;
+
+  /* синхронно с SVG */
+  background-size: 105px 96px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='105' height='96'%3E%3Cg transform='rotate(-41 52.5 48)'%3E%3Ctext x='52.5' y='16' text-anchor='middle' font-family='Arial' font-size='14' fill='%23000' fill-opacity='0.75'%3Eabf3c2d%3C/text%3E%3Ctext x='16' y='48' text-anchor='middle' font-family='Arial' font-size='14' fill='%23000' fill-opacity='0.75'%3Eabf3c2d%3C/text%3E%3Ctext x='89' y='48' text-anchor='middle' font-family='Arial' font-size='14' fill='%23000' fill-opacity='0.75'%3Eabf3c2d%3C/text%3E%3Ctext x='52.5' y='80' text-anchor='middle' font-family='Arial' font-size='14' fill='%23000' fill-opacity='0.75'%3Eabf3c2d%3C/text%3E%3C/g%3E%3C/svg%3E");
+}
+
     </style>
 </head>
 <body>
@@ -673,8 +688,6 @@ body {
         </div>
     </div>
     <div id="leaflet-control-layers"></div>
-    </div>
-    <div class="overlay"></div>
     <div id="map"></div>
  <div class="custom-menu">
    <div class="menu-row">
@@ -913,22 +926,15 @@ const baseLayers = {
 // Добавляем контрол для переключения карт
 L.control.layers(baseLayers).addTo(map);
 
-// Функция для изменения фильтра на изображении
-function updateOverlayFilter() {
-    const overlay = document.querySelector('.overlay');
-    if (map.hasLayer(darkLayer)) {
-        overlay.style.filter = 'invert(1) brightness(2)';
-    } else {
-        overlay.style.filter = 'none';
-    }
-}
+              const watermark = L.DomUtil.create(
+        "div",
+        "leaflet-watermark",
+        map.getContainer()
+      );
 
-// При добавлении или удалении слоя темной карты
-map.on('layeradd', updateOverlayFilter);
-map.on('layerremove', updateOverlayFilter);
-
-// Если карта уже загружена, сразу применим фильтр
-updateOverlayFilter();
+      L.DomEvent.disableClickPropagation(watermark);
+      L.DomEvent.disableScrollPropagation(watermark);
+        
 
         let currentObjectId = 9500;
         let deleteMode = false;
